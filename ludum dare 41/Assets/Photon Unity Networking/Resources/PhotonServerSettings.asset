@@ -40,4 +40,13 @@ MonoBehaviour:
   - RPC_DoAttack
   - RPC_SetGoalRed
   - RPC_BallPickup
+  - RPC_GoalScored
+  - RPC_ResetBall
+  - RPC_DropBall
+  - RPC_RestartPlayerPos
+  - RPC_StartGameCountdown
+  - RPC_WaitForGameStart
+  - RPC_PauseGame
+  - RPC_ResumeGame
+  - RPC_UnpauseCounter
   DisableAutoOpenWizard: 1

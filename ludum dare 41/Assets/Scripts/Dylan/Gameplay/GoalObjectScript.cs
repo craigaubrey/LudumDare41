@@ -25,9 +25,13 @@ public class GoalObjectScript : MonoBehaviour {
         {
             if (gameObject.GetComponent<PhotonView>().isMine && collision.gameObject.GetComponent<PhotonView>().isMine)
                 print("Own goal collision");
-            else
+            else if(!gameObject.GetComponent<PhotonView>().isMine && collision.gameObject.GetComponent<PhotonView>().isMine)
             {
-                print("Goal");
+                //For UI Updates and such
+                GameObject.Find("Controller").GetComponent<GameStatusController>().GoalScored();
+                //TO reset play
+                GameObject.FindWithTag("ball").GetComponent<BallScript>().RestartPlay();
+                GameObject.Find("Controller").GetComponent<GameplayController>().RestartPlay();
             }
         }
     }

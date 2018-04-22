@@ -36,6 +36,7 @@ public class MeleeScript : MonoBehaviour {
     {
         if (attacking && other.gameObject != transform.parent.gameObject)
         {
+            GameObject.FindWithTag("ball").GetComponent<BallScript>().HitDropBall();
             print("Attacked SUccessfully");
             if(transform.parent.localRotation.y == 0)
             {

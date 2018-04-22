@@ -16,6 +16,49 @@ public class BallScript : MonoBehaviour {
     private void Update()
     {
         if (carrier != null)
+        {
             transform.position = carrier.transform.position;
+            gameObject.GetComponent<Rigidbody2D>().isKinematic = true;
+            gameObject.GetComponent<CircleCollider2D>().enabled = false;
+        }
+
+        
+    }
+
+    public void RestartPlay()
+    {
+        GetComponent<PhotonView>().RPC("RPC_DropBall", PhotonTargets.All);
+        GetComponent<PhotonView>().RPC("RPC_ResetBall", PhotonTargets.All);
+    }
+
+    public void HitDropBall()
+    {
+        GetComponent<PhotonView>().RPC("RPC_DropBall", PhotonTargets.All);
+    }
+
+    ///
+    ///RPCS
+    ///
+    [PunRPC]
+    void RPC_ResetBall()
+    {
+        transform.position = new Vector2(0, 0);
+    }
+
+    [PunRPC]
+    void RPC_DropBall()
+    {
+        carrier = null;
+        gameObject.transform.parent = null;
+        
+        StartCoroutine(WaitToResetBallComps());
+        GetComponent<Rigidbody2D>().AddForce(Vector2.up * 50);
+    }
+
+    IEnumerator WaitToResetBallComps()
+    {
+        yield return new WaitForSeconds(0.4f);
+        gameObject.GetComponent<Rigidbody2D>().isKinematic = false;
+        gameObject.GetComponent<CircleCollider2D>().enabled = true;
     }
 }

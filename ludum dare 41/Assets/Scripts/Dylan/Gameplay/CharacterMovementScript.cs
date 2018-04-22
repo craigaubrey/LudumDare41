@@ -6,6 +6,8 @@ using UnityEngine.UI;
 public class CharacterMovementScript : Photon.MonoBehaviour {
     public float movementSpeed, jumpHeight, jumpSpeed;
     public float attackCooldownTimer, attackCooldown;
+    public bool canDoubleJump = true;
+    
     //testing tools
     public bool testChar;
     bool triggerDown = false;
@@ -28,19 +30,23 @@ public class CharacterMovementScript : Photon.MonoBehaviour {
     }
 
     // Update is called once per frame
-    void Update () {
+    void Update()
+    {
         if (photonView.isMine || dmCon.devMode && testChar)
         {
-            //Left and right movement
-            CheckMoveLeft();
-            CheckMoveRight();
-            CheckJump();
-            CheckMelee();
-            if (attackCooldownTimer > 0)
-                attackCooldownTimer -= Time.deltaTime;
+            if (!dmCon.gameObject.GetComponent<GameStatusController>().restartPause && !dmCon.gameObject.GetComponent<GameStatusController>().paused)
+            {
+                //Left and right movement
+                CheckMoveLeft();
+                CheckMoveRight();
+                CheckJump();
+                CheckMelee();
+                CheckDoubleJump();
+                if (attackCooldownTimer > 0)
+                    attackCooldownTimer -= Time.deltaTime;
+            }
         }
-
-	}
+    }
 
     //Moveing right
     void CheckMoveRight()
@@ -69,9 +75,15 @@ public class CharacterMovementScript : Photon.MonoBehaviour {
     //Jumping
     void CheckJump()
     {
-        if (Input.GetButtonDown("Jump") && Grounded())
+        if (Input.GetButtonDown("Jump"))
         {
-            rb.AddForce(Vector2.up * jumpHeight);
+            if(Grounded())
+                rb.AddForce(Vector2.up * jumpHeight);
+            else if (canDoubleJump)
+            {
+                rb.AddForce(Vector2.up * jumpHeight);
+                canDoubleJump = false;
+            }
         }
     }
 
@@ -92,6 +104,15 @@ public class CharacterMovementScript : Photon.MonoBehaviour {
         //Recognize if the trigger is back up
         if (Input.GetAxis("Right Trigger Melee Attack") > -0.3f)
             triggerDown = false;
+    }
+
+    void CheckDoubleJump()
+    {
+        if (!canDoubleJump)
+        {
+            if (rb.velocity.y == 0)
+                canDoubleJump = true;
+        }
     }
 
     /// <summary>
@@ -121,11 +142,12 @@ public class CharacterMovementScript : Photon.MonoBehaviour {
     /// </summary>
     bool Grounded()
     {
-        if (rb.velocity.y > - 0.1f && rb.velocity.y < 0.1f)
+        if (rb.velocity.y == 0)
             return true;
         else
             return false;
     }
+
     //Return the speed
     float GetSpeed()
     {

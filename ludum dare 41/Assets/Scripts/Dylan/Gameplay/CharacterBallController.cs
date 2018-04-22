@@ -8,7 +8,6 @@ public class CharacterBallController : MonoBehaviour {
 
     public void BallPickup()
     {
-        
         GetComponent<PhotonView>().RPC("RPC_BallPickup", PhotonTargets.All);
     }
 

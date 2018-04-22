@@ -39,6 +39,8 @@ public class SceneLoadController : MonoBehaviour
         }
         else if (dmCon.devMode)
             SetUpDevGame();
+
+        GetComponent<GameStatusController>().StartGameInitializer();
     }
 
     //Add instance to network
@@ -50,9 +52,9 @@ public class SceneLoadController : MonoBehaviour
     void SpawnPlayer()
     {
         if(PhotonNetwork.isMasterClient)
-            PhotonNetwork.Instantiate(mainPlayer.name, p1StartPos, p1Rot, 0);
+            GetComponent<CharacterContainer>().myCharacter = PhotonNetwork.Instantiate(mainPlayer.name, p1StartPos, p1Rot, 0);
         else
-            PhotonNetwork.Instantiate(mainPlayer.name, p2StartPos, p2Rot, 0);
+            GetComponent<CharacterContainer>().myCharacter = PhotonNetwork.Instantiate(mainPlayer.name, p2StartPos, p2Rot, 0);
     }
 
 
