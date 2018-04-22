@@ -37,4 +37,7 @@ MonoBehaviour:
   - RequestForPickupItems
   - RequestForPickupTimes
   - RPC_StartGame
+  - RPC_DoAttack
+  - RPC_SetGoalRed
+  - RPC_BallPickup
   DisableAutoOpenWizard: 1
