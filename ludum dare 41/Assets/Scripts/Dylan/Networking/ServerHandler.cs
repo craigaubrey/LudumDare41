@@ -6,7 +6,7 @@ using UnityEngine.UI;
 public class ServerHandler : MonoBehaviour {
 
 	// Use this for initialization
-	void Start () {
+	public void FindOnlineMatch () {
         PhotonNetwork.ConnectUsingSettings("v1.0");
 	}
 	

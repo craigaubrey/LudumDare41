@@ -316,7 +316,13 @@
     <Compile Include="Assets\PhotonChatApi\ChatState.cs" />
     <Compile Include="Assets\PhotonChatApi\ChatUserStatus.cs" />
     <Compile Include="Assets\PhotonChatApi\IChatClientListener.cs" />
-    <Compile Include="Assets\Scripts\Dylan\CharacterMovementScript.cs" />
+    <Compile Include="Assets\Scripts\Dylan\DevModeController.cs" />
+    <Compile Include="Assets\Scripts\Dylan\Gameplay\BallScript.cs" />
+    <Compile Include="Assets\Scripts\Dylan\Gameplay\CharacterBallController.cs" />
+    <Compile Include="Assets\Scripts\Dylan\Gameplay\CharacterMovementScript.cs" />
+    <Compile Include="Assets\Scripts\Dylan\Gameplay\GameStatusController.cs" />
+    <Compile Include="Assets\Scripts\Dylan\Gameplay\GoalObjectScript.cs" />
+    <Compile Include="Assets\Scripts\Dylan\Gameplay\MeleeScript.cs" />
     <Compile Include="Assets\Scripts\Dylan\Networking\ServerHandler.cs" />
     <Compile Include="Assets\Scripts\Dylan\SceneLoadController.cs" />
   </ItemGroup>

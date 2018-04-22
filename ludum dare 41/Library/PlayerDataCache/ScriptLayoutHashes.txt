@@ -24,6 +24,7 @@ b027659a510ae8d01d6d5f31baf9827a Assembly-CSharp.dll:.PhotonStatsGui
 28b9635dada29d5334975a74e5429ae3 Assembly-CSharp.dll:ExitGames.UtilityScripts.TextToggleIsOnTransition
 05524b8f659e7bfe5756d1335fec24ba Assembly-CSharp.dll:ExitGames.UtilityScripts.ButtonInsideScrollList
 05524b8f659e7bfe5756d1335fec24ba Assembly-CSharp.dll:.NetworkCullingHandler
+05524b8f659e7bfe5756d1335fec24ba Assembly-CSharp.dll:.GameStatusController
 05524b8f659e7bfe5756d1335fec24ba Assembly-CSharp.dll:ExitGames.UtilityScripts.PlayerRoomIndexing
 a35dc9cca2faebc5f5f1aeb9e8e47bbe UnityEngine.UI.dll:UnityEngine.UI.AspectRatioFitter
 05524b8f659e7bfe5756d1335fec24ba UnityEngine.UI.dll:UnityEngine.EventSystems.BaseInput
@@ -186,4 +187,9 @@ d1755adc44fcb9e44c42a5889d35f7a0 Assembly-CSharp.dll:.MoveByKeys
 05524b8f659e7bfe5756d1335fec24ba Assembly-CSharp.dll:.QuitOnEscapeOrBack
 604f5f55c1cc414f64da1990b36ff015 Assembly-CSharp.dll:.PhotonView
 b2dc25029b6f083ffbbdf9df269f825a Assembly-CSharp.dll:.InRoomChat
-40374a77d5fc7819cff65a08af213030 Assembly-CSharp.dll:.CharacterMovementScript
+37ff981876409de32dad1933b8d25722 Assembly-CSharp.dll:.CharacterMovementScript
+11806cad98d73bb82deb488ab0f18f41 Assembly-CSharp.dll:.DevModeController
+7caab057ca03acad916c2fc67a9ea3bc Assembly-CSharp.dll:.MeleeScript
+05524b8f659e7bfe5756d1335fec24ba Assembly-CSharp.dll:.GoalObjectScript
+63a85b7e6ec9e8e1250e11a480162459 Assembly-CSharp.dll:.BallScript
+05524b8f659e7bfe5756d1335fec24ba Assembly-CSharp.dll:.CharacterBallController
