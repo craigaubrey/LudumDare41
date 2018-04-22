@@ -4,4 +4,10 @@
 EditorBuildSettings:
   m_ObjectHideFlags: 0
   serializedVersion: 2
-  m_Scenes: []
+  m_Scenes:
+  - enabled: 1
+    path: Assets/MainMenu.unity
+    guid: 260ddb2af83fe774db081d27739528c0
+  - enabled: 1
+    path: Assets/DylanTest.unity
+    guid: f7ab6523a1f90024db9cb833d19777a9
