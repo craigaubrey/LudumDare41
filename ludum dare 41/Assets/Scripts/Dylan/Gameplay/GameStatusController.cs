@@ -14,7 +14,7 @@ public class GameStatusController : MonoBehaviour {
     private void Start()
     {
         startGameGraphic = GameObject.Find("StartRound_Img");
-        startGameGraphic.SetActive(false);
+        startGameGraphic.SetActive(true);
     }
 
     private void Update()
@@ -64,6 +64,12 @@ public class GameStatusController : MonoBehaviour {
         restartPause = false;
     }
 
+    void OnPhotonPlayerDisconnected(PhotonPlayer otherPlayer)
+    {
+        GetComponent<GameEndScript>().EndGame(true);
+
+    }
+
     /// <summary>
     /// RPCS
     /// </summary>
@@ -80,6 +86,8 @@ public class GameStatusController : MonoBehaviour {
     void RPC_StartGameCountdown() {
         restartTimer = 4;
     }
+
+
 
     ///
     ///Getters

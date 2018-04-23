@@ -428,6 +428,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f27c1c88020543a4c9fb81afd5029c0b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  level: 0
+  sceneList:
+  - Egyptian
+  - Mech
 --- !u!4 &1168019081
 Transform:
   m_ObjectHideFlags: 0
