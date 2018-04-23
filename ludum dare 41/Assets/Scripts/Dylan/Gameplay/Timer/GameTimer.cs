@@ -15,6 +15,7 @@ public class GameTimer : MonoBehaviour
     void Start()
     {
         gameTimer = gameDuration;
+        GameObject.Find("Timer_Txt").GetComponent<Text>().text = gameTimer.ToString("0");
     }
 
     // Update is called once per frame
@@ -29,7 +30,7 @@ public class GameTimer : MonoBehaviour
             if (gameTimer <= 0)
             {
                 //End Game
-                GetComponent<GameEndScript>().EndGame();
+                GetComponent<GameEndScript>().EndGame(false);
             }
         }
     }

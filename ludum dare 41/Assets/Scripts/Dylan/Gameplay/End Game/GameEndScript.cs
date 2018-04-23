@@ -12,31 +12,40 @@ public class GameEndScript : MonoBehaviour {
         endGameUI.SetActive(false);
     }
 
-    public void EndGame()
+    public void EndGame(bool disconnected)
     {
-        GetComponent<PhotonView>().RPC("RPC_EndGame", PhotonTargets.All);
+        GetComponent<PhotonView>().RPC("RPC_EndGame", PhotonTargets.All, disconnected);
     }
 
     [PunRPC]
-    void RPC_EndGame()
+    void RPC_EndGame(bool disconnected)
     {
+        string winText = "";
         GetComponent<GameStatusController>().paused = true;
         endGameUI.SetActive(true);
-        int p1Pts, p2Pts;
-        string winText = "";
-        p1Pts = GetComponent<GameStatusController>().p1Points;
-        p2Pts = GetComponent<GameStatusController>().p2Points;
+        if (!disconnected)
+        {
+            int p1Pts, p2Pts;
+            p1Pts = GetComponent<GameStatusController>().p1Points;
+            p2Pts = GetComponent<GameStatusController>().p2Points;
 
-        if (p1Pts > p2Pts)
-            winText = GetComponent<GameStatusController>().p1NameTest;
-        if(p1Pts < p2Pts)
-            winText = GetComponent<GameStatusController>().p2NameTest;
+            if (p1Pts > p2Pts)
+                winText = GetComponent<GameStatusController>().p1NameTest;
+            if (p1Pts < p2Pts)
+                winText = GetComponent<GameStatusController>().p2NameTest;
 
-        winText += " has won the game!";
+            winText += " has won the game!";
 
-        if (p1Pts == p2Pts)
-            winText = "Draw!";
+            if (p1Pts == p2Pts)
+                winText = "Draw!";
+
+            
+        }
+
+        else
+            winText = "Lost connection to other player";
 
         GameObject.Find("Win_Txt").GetComponent<Text>().text = winText;
+        PhotonNetwork.LeaveRoom();
     }
 }

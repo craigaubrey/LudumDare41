@@ -29,6 +29,7 @@ public class MeleeScript : MonoBehaviour {
 
     public void DoAttack()
     {
+        
         GetComponent<PhotonView>().RPC("RPC_DoAttack", PhotonTargets.Others);
     }
 
@@ -42,7 +43,7 @@ public class MeleeScript : MonoBehaviour {
 
     IEnumerator AttackingCoroutine()
     {
-        yield return new WaitForSeconds(0.1f);
+        yield return new WaitForSeconds(1.5f);
 
         attacking = false;
         GetComponent<Collider2D>().enabled = false;

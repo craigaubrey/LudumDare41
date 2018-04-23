@@ -23,24 +23,27 @@ public class SceneLoadController : MonoBehaviour
         dmCon = GameObject.Find("Controller").GetComponent<DevModeController>();
 
         //add scene load
-        SceneManager.sceneLoaded += OnSceneFinishedLoading;
+        InitGame();
 
     }
 
     //Spawn player on scene load
-    void OnSceneFinishedLoading(Scene scene, LoadSceneMode mode)
+    void InitGame()
     {
-        if (scene.name == "DylanTest" && !dmCon.devMode)
+
+        if (!dmCon.devMode)
         {
             SpawnPlayer();
             SpawnGoals();
             if (PhotonNetwork.isMasterClient)
                 SpawnBall();
             GetComponent<GameStatusController>().StartGameInitializer();
+
         }
         else if (dmCon.devMode)
             SetUpDevGame();
 
+        
     }
 
     //Add instance to network
@@ -51,7 +54,8 @@ public class SceneLoadController : MonoBehaviour
     Quaternion p2Rot = new Quaternion(0, 180, 0, 0);
     void SpawnPlayer()
     {
-        if(PhotonNetwork.isMasterClient)
+        print("shite");
+        if (PhotonNetwork.isMasterClient)
             GetComponent<CharacterContainer>().myCharacter = PhotonNetwork.Instantiate(mainPlayer.name, p1StartPos, p1Rot, 0);
         else
             GetComponent<CharacterContainer>().myCharacter = PhotonNetwork.Instantiate(mainPlayer.name, p2StartPos, p2Rot, 0);
@@ -80,7 +84,7 @@ public class SceneLoadController : MonoBehaviour
 
     void SpawnBall()
     {
-        GameObject g = PhotonNetwork.Instantiate(ballObj.name, new Vector3(0,0,0), ballObj.transform.rotation, 0);
+        GameObject g = PhotonNetwork.Instantiate(ballObj.name, new Vector3(0,4.5f,0), ballObj.transform.rotation, 0);
         g.name = "Ball_Obj";
     }
 
@@ -97,8 +101,9 @@ public class SceneLoadController : MonoBehaviour
         PhotonNetwork.LeaveRoom();
     }
 
-    void OnLeftRoom()
+    public void LoadMainMenu()
     {
-        PhotonNetwork.LoadLevel(0);
+        PhotonNetwork.Disconnect();
+        SceneManager.LoadScene(0);
     }
 }

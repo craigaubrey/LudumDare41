@@ -11,7 +11,7 @@ public class GameplayController : MonoBehaviour {
 
     GameObject pauseMenu, mainPauseUI, waitingPauseUI;
 
-    private void Start()
+    private void Awake()
     {
         pauseMenu = GameObject.Find("PauseMenu_Parent");
         mainPauseUI = pauseMenu.transform.GetChild(0).gameObject;

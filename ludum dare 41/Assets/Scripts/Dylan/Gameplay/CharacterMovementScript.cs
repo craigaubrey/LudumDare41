@@ -101,6 +101,11 @@ public class CharacterMovementScript : Photon.MonoBehaviour {
         if (Input.GetAxis("Right Trigger Melee Attack") < -0.4f && CanAttack())
         {
             print("attack");
+            if (transform.rotation.y == 0)
+                rb.AddForce(Vector2.right * 600);
+            else
+                rb.AddForce(Vector2.left * 600);
+
             melee.DoAttack();
             //Trigger is down
             triggerDown = true;
@@ -167,6 +172,10 @@ public class CharacterMovementScript : Photon.MonoBehaviour {
     float GetStickMovement()
     {
         return Input.GetAxis("HorizontalStick");
+    }
+    float GetVertStick()
+    {
+        return Input.GetAxis("VertStick");
     }
     //make sure the trigger isn't being held down & check cooldown timer (Set in inspector)
     bool CanAttack()

@@ -11,3 +11,6 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/DylanTest.unity
     guid: f7ab6523a1f90024db9cb833d19777a9
+  - enabled: 1
+    path: Assets/Mechlevel.unity
+    guid: 9bcbcf50da4e29041b015f3e846d49a7

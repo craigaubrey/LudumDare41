@@ -2,11 +2,15 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.SceneManagement;
 
 public class ServerHandler : MonoBehaviour {
+    public int level;
+    [SerializeField]
+    public List<string> sceneList;
 
 	// Use this for initialization
-	public void FindOnlineMatch () {
+	public void FindOnlineMatch () { 
         PhotonNetwork.ConnectUsingSettings("v1.0");
 	}
 	
@@ -29,6 +33,7 @@ public class ServerHandler : MonoBehaviour {
         int randomName = Random.Range(0, 100);
 
         PhotonNetwork.CreateRoom(randomName.ToString(), options, TypedLobby.Default);
+        level = Random.Range(1, sceneList.Count+1);
     }
 
     //Joined a room
@@ -43,7 +48,7 @@ public class ServerHandler : MonoBehaviour {
     {
         if (PhotonNetwork.isMasterClient)
         {
-            GetComponent<PhotonView>().RPC("RPC_StartGame", PhotonTargets.All);
+            GetComponent<PhotonView>().RPC("RPC_StartGame", PhotonTargets.All, level);
         }
     }
 
@@ -52,8 +57,8 @@ public class ServerHandler : MonoBehaviour {
     /// </summary>
     /// //Move all players to game scene
     [PunRPC]
-    public void RPC_StartGame()
+    public void RPC_StartGame(int level)
     {
-        PhotonNetwork.LoadLevel(1);
+        PhotonNetwork.LoadLevel(level);
     }
 }

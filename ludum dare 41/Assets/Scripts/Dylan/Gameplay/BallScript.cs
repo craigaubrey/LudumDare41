@@ -42,7 +42,7 @@ public class BallScript : MonoBehaviour {
     [PunRPC]
     void RPC_ResetBall()
     {
-        transform.position = new Vector2(0, 0);
+        transform.position = new Vector2(0, 4.5f);
     }
 
     [PunRPC]
