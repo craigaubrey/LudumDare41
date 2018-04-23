@@ -5,10 +5,26 @@ using UnityEngine;
 public class MeleeScript : MonoBehaviour {
     public float meleePower;
     public bool attacking;
+    public float hitCooldownTimer, hitCooldown;
+
+    [SerializeField]
+    float hitHorizForce;
+    [SerializeField]
+    float hitVertForce;
+    [SerializeField]
+    float deadHorizForce;
+    [SerializeField]
+    float deadVertForce;
 
     void Start()
     {
         attacking = false;
+    }
+
+    private void Update()
+    {
+        if (hitCooldownTimer > 0)
+            hitCooldownTimer -= Time.deltaTime;
     }
 
     public void DoAttack()
@@ -32,24 +48,55 @@ public class MeleeScript : MonoBehaviour {
         GetComponent<Collider2D>().enabled = false;
     }
 
+    //Hitting another player
     void OnCollisionStay2D(Collision2D other)
     {
-        if (attacking && other.gameObject != transform.parent.gameObject)
+        if (attacking && other.gameObject != transform.parent.gameObject && other.gameObject.tag == "character" && CanBeHit())
         {
+            hitCooldownTimer = hitCooldown;
             GameObject.FindWithTag("ball").GetComponent<BallScript>().HitDropBall();
-            print("Attacked SUccessfully");
-            if(transform.parent.localRotation.y == 0)
+            //Update HP & RPC
+            other.gameObject.GetComponent<CharacterHPScript>().UpdateHealth(other.gameObject.GetComponent<CharacterHPScript>().HP-=1);
+            int hp = other.gameObject.GetComponent<CharacterHPScript>().HP;
+
+            //Still alive, but vulnerable to death
+            if (hp == 1)
             {
-                other.gameObject.GetComponent<Rigidbody2D>().AddForce(Vector2.up * 60);
-                other.gameObject.GetComponent<Rigidbody2D>().AddForce(Vector2.right * 100);
+                //Visual representation - Push back
+                if (transform.parent.localRotation.y == 0)
+                {
+                    other.gameObject.GetComponent<Rigidbody2D>().AddForce(Vector2.up * hitVertForce);
+                    other.gameObject.GetComponent<Rigidbody2D>().AddForce(Vector2.right * hitHorizForce);
+                }
+                else
+                {
+                    other.gameObject.GetComponent<Rigidbody2D>().AddForce(Vector2.up * hitVertForce);
+                    other.gameObject.GetComponent<Rigidbody2D>().AddForce(Vector2.left * hitHorizForce);
+                }
             }
-            else
+            if (hp <= 0)
             {
-                other.gameObject.GetComponent<Rigidbody2D>().AddForce(Vector2.up * 60);
-                other.gameObject.GetComponent<Rigidbody2D>().AddForce(Vector2.left * 100);
+                //Visual representation - Push back
+                if (transform.parent.localRotation.y == 0)
+                {
+                    other.gameObject.GetComponent<Rigidbody2D>().AddForce(Vector2.up * deadVertForce);
+                    other.gameObject.GetComponent<Rigidbody2D>().AddForce(Vector2.right * deadHorizForce);
+                }
+                else
+                {
+                    other.gameObject.GetComponent<Rigidbody2D>().AddForce(Vector2.up * deadVertForce);
+                    other.gameObject.GetComponent<Rigidbody2D>().AddForce(Vector2.left * deadHorizForce);
+                }
             }
+            
         }
     }
 
-
+    bool CanBeHit()
+    {
+        if (hitCooldownTimer <= 0)
+            return true;
+        else
+            return false;
+    }
 }

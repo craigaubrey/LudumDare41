@@ -1,6 +1,6 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 2015
+# Visual Studio 2017
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ludum dare 41", "ludum dare 41.csproj", "{8D5E0DA6-E8D5-7008-800D-6F59F9BBD4D7}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ludum dare 41.Plugins", "ludum dare 41.Plugins.csproj", "{3D66C7C4-76B7-C692-B424-B8FC2D22B53F}"

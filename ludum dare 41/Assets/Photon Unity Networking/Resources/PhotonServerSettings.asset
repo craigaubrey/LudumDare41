@@ -49,4 +49,9 @@ MonoBehaviour:
   - RPC_PauseGame
   - RPC_ResumeGame
   - RPC_UnpauseCounter
+  - RPC_UpdateHP
+  - RPC_ApplyForceAfterGoal
+  - RPC_PausePlayAndStartCoroutine
+  - SetCharacterSpriteColour
+  - RPC_EndGame
   DisableAutoOpenWizard: 1

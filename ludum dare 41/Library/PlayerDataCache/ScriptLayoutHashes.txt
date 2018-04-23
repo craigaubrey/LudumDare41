@@ -1,6 +1,6 @@
 WindowsStandalone
 PlayerPath?
-C:/Users/Dnich/Desktop/test.exe
+C:/Users/Dnich/Desktop/LD41.exe
 SceneListBegin?
 Assets/MainMenu.unity
 Assets/DylanTest.unity
@@ -25,7 +25,7 @@ b027659a510ae8d01d6d5f31baf9827a Assembly-CSharp.dll:.PhotonStatsGui
 28b9635dada29d5334975a74e5429ae3 Assembly-CSharp.dll:ExitGames.UtilityScripts.TextToggleIsOnTransition
 05524b8f659e7bfe5756d1335fec24ba Assembly-CSharp.dll:ExitGames.UtilityScripts.ButtonInsideScrollList
 05524b8f659e7bfe5756d1335fec24ba Assembly-CSharp.dll:.NetworkCullingHandler
-63553a00e9b2ff51cd9e28404e86ecba Assembly-CSharp.dll:.GameStatusController
+1755d78b606ac7e1e843e6f97e6c5a5f Assembly-CSharp.dll:.GameStatusController
 05524b8f659e7bfe5756d1335fec24ba Assembly-CSharp.dll:ExitGames.UtilityScripts.PlayerRoomIndexing
 a35dc9cca2faebc5f5f1aeb9e8e47bbe UnityEngine.UI.dll:UnityEngine.UI.AspectRatioFitter
 05524b8f659e7bfe5756d1335fec24ba UnityEngine.UI.dll:UnityEngine.EventSystems.BaseInput
@@ -135,7 +135,8 @@ bc68edb0af574bf79f9550ead8ebae5c UnityEngine.HoloLens.dll:UnityEngine.Audio.Audi
 463516d5b5fe8e67a0a24c48f2095b04 UnityEngine.HoloLens.dll:UnityEngine.EventSystems.HoloLensInputModule
 c2275a8bfbb9f9942cad75ecdfded41d UnityEngine.HoloLens.dll:UnityEngine.XR.WSA.SpatialMappingCollider
 45f3431f0103c41611e8d4eec3d439df UnityEngine.HoloLens.dll:UnityEngine.XR.WSA.SpatialMappingRenderer
-05524b8f659e7bfe5756d1335fec24ba Assembly-CSharp.dll:.GoalObjectScript
+d13c6647cbf1595457d7d04043195804 Assembly-CSharp.dll:.GoalObjectScript
+6801ecb88714d771ef3ac55cdd415e71 Assembly-CSharp.dll:.CharacterHPScript
 4ce2b1853c9a392b036a6a654be90ccb Assembly-CSharp.dll:.OnClickInstantiate
 090584907af2e462994cc893ced507b3 Assembly-CSharp.dll:.PhotonRigidbodyView
 05524b8f659e7bfe5756d1335fec24ba UnityEngine.Advertisements.dll:UnityEngine.Advertisements.CallbackExecutor
@@ -163,6 +164,7 @@ e9bdabf9265d758d56f01bb188916fa8 UnityEngine.Networking.dll:UnityEngine.Networki
 528ea1fd7c01796fc60c4e2f172ea229 UnityEngine.Networking.dll:UnityEngine.Networking.NetworkTransformVisualizer
 45e45363fe7dc878132f009cf0d59b7e Assembly-CSharp.dll:LetterboxCamera.ForceCameraRatio
 05524b8f659e7bfe5756d1335fec24ba Assembly-CSharp.dll:.PointedAtGameObjectInfo
+8b52d034f1286272dbc54ae4ac9e686e Assembly-CSharp.dll:.CharacterContainer
 05524b8f659e7bfe5756d1335fec24ba UnityEngine.TestRunner.dll:UnityEngine.TestTools.TestRunner.Callbacks.PlayModeRunnerCallback
 96d0fbde9fd209878a0a291f82c9bcdd UnityEngine.TestRunner.dll:UnityEngine.TestTools.TestRunner.PlaymodeTestsController
 64eb32cc721b1cc68a91ed57461e188c UnityEngine.TestRunner.dll:UnityEngine.TestTools.TestRunner.Callbacks.RemoteTestResultSender
@@ -171,6 +173,7 @@ e0f7ffd5d5c2abe4b2e16569a21163da UnityEngine.GoogleAudioSpatializer.dll:UnityEng
 67a5f2c97205d2e41a8ed7c7ce898f6e UnityEngine.GoogleAudioSpatializer.dll:UnityEngine.Experimental.Audio.Google.GvrAudioSoundfieldExtension
 67a5f2c97205d2e41a8ed7c7ce898f6e UnityEngine.GoogleAudioSpatializer.dll:UnityEngine.Experimental.Audio.Google.GvrAudioSourceExtension
 abe32a93cd37b12375c9475f8f38bec3 Assembly-CSharp.dll:.PunTurnManager
+05524b8f659e7bfe5756d1335fec24ba Assembly-CSharp.dll:.GameplayController
 9e0ef5bf862444b5dc48b5a99554ce7c UnityEngine.GoogleAudioSpatializer.dll:UnityEngine.Experimental.Audio.Google.GvrAudioListenerExtension
 e0f7ffd5d5c2abe4b2e16569a21163da UnityEngine.GoogleAudioSpatializer.dll:UnityEngine.Experimental.Audio.Google.GvrAudioRoom
 67a5f2c97205d2e41a8ed7c7ce898f6e UnityEngine.GoogleAudioSpatializer.dll:UnityEngine.Experimental.Audio.Google.GvrAudioSoundfieldExtension
@@ -189,9 +192,11 @@ ec0082b40adf3b0930cd87250ffdbf1d Assembly-CSharp.dll:.SupportLogger
 08712033bfb8d4fd2842041f9a20ded7 Assembly-CSharp.dll:.ManualPhotonViewAllocator
 d1755adc44fcb9e44c42a5889d35f7a0 Assembly-CSharp.dll:.MoveByKeys
 05524b8f659e7bfe5756d1335fec24ba Assembly-CSharp.dll:.QuitOnEscapeOrBack
-7caab057ca03acad916c2fc67a9ea3bc Assembly-CSharp.dll:.MeleeScript
+57734ae8a5fa8c3da017014367290dc5 Assembly-CSharp.dll:.MeleeScript
 604f5f55c1cc414f64da1990b36ff015 Assembly-CSharp.dll:.PhotonView
 b2dc25029b6f083ffbbdf9df269f825a Assembly-CSharp.dll:.InRoomChat
-f498f12170b11550f386982e305351b7 Assembly-CSharp.dll:.CharacterMovementScript
-8b52d034f1286272dbc54ae4ac9e686e Assembly-CSharp.dll:.CharacterContainer
-05524b8f659e7bfe5756d1335fec24ba Assembly-CSharp.dll:.GameplayController
+2d75dbaf0fe8ca03e8ad43787cf5b711 Assembly-CSharp.dll:.CharacterMovementScript
+05524b8f659e7bfe5756d1335fec24ba Assembly-CSharp.dll:.CharacterMainController
+e3376188fc5a1bdda83dbde33af02104 Assembly-CSharp.dll:.PlatformMoveScript
+be1ebd0de28dff6a69b2c127f786e313 Assembly-CSharp.dll:.GameTimer
+05524b8f659e7bfe5756d1335fec24ba Assembly-CSharp.dll:.GameEndScript

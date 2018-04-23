@@ -3,8 +3,9 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class GameplayController : MonoBehaviour {
-    Vector2 p1StartPos = new Vector2(-5.5f, 2);
-    Vector2 p2StartPos = new Vector2(5.5f, 2);
+    Vector2 p1StartPos = new Vector2(-5.5f, -4);
+    Vector2 p2StartPos = new Vector2(5.5f, -4);
+
 
     int pauseCounter = 0;
 
@@ -28,8 +29,16 @@ public class GameplayController : MonoBehaviour {
 
     public void RestartPlay()
     {
+        ResetHP();
         GetComponent<PhotonView>().RPC("RPC_RestartPlayerPos", PhotonTargets.All);
         GetComponent<PhotonView>().RPC("RPC_WaitForGameStart", PhotonTargets.All);
+    }
+
+    void ResetHP()
+    {
+        GameObject[] chars = GameObject.FindGameObjectsWithTag("character");
+        foreach(GameObject g in chars)
+            g.GetComponent<CharacterHPScript>().UpdateHealth(2);
     }
 
     void CheckPause()
@@ -53,6 +62,7 @@ public class GameplayController : MonoBehaviour {
     [PunRPC]
     void RPC_RestartPlayerPos()
     {
+        GetComponent<CharacterContainer>().myCharacter.GetComponent<Rigidbody2D>().velocity = new Vector2(0, 0);
         if (PhotonNetwork.isMasterClient)
             GetComponent<CharacterContainer>().myCharacter.transform.position = p1StartPos;
         else

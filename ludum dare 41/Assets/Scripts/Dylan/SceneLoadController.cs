@@ -36,16 +36,16 @@ public class SceneLoadController : MonoBehaviour
             SpawnGoals();
             if (PhotonNetwork.isMasterClient)
                 SpawnBall();
+            GetComponent<GameStatusController>().StartGameInitializer();
         }
         else if (dmCon.devMode)
             SetUpDevGame();
 
-        GetComponent<GameStatusController>().StartGameInitializer();
     }
 
     //Add instance to network
-    Vector2 p1StartPos = new Vector2(-5.5f, 0);
-    Vector2 p2StartPos = new Vector2(5.5f, 0);
+    Vector2 p1StartPos = new Vector2(-5.5f, -4);
+    Vector2 p2StartPos = new Vector2(5.5f, -4);
 
     Quaternion p1Rot = new Quaternion(0, 0, 0, 0);
     Quaternion p2Rot = new Quaternion(0, 180, 0, 0);
@@ -58,8 +58,8 @@ public class SceneLoadController : MonoBehaviour
     }
 
 
-    Vector2 p1GoalPos = new Vector2(-8, 0);
-    Vector2 p2GoalPos = new Vector2(8, 0);
+    Vector2 p1GoalPos = new Vector2(-8, -3);
+    Vector2 p2GoalPos = new Vector2(8, -3);
     //add goals to network
     void SpawnGoals()
     {
@@ -90,5 +90,15 @@ public class SceneLoadController : MonoBehaviour
         g.GetComponent<CharacterMovementScript>().testChar = false;
         g = GameObject.Instantiate(mainPlayer, mainPlayer.transform.position, Quaternion.identity);
         g.GetComponent<CharacterMovementScript>().testChar = true;
+    }
+
+    public void LeaveRoom()
+    {
+        PhotonNetwork.LeaveRoom();
+    }
+
+    void OnLeftRoom()
+    {
+        PhotonNetwork.LoadLevel(0);
     }
 }

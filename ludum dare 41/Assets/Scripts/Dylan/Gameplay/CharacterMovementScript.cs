@@ -4,12 +4,15 @@ using UnityEngine;
 using UnityEngine.UI;
 
 public class CharacterMovementScript : Photon.MonoBehaviour {
-    public float movementSpeed, jumpHeight, jumpSpeed;
+    public float movementSpeed, jumpHeight, jumpSpeed, runSpeed, carrySpeed;
     public float attackCooldownTimer, attackCooldown;
     public bool canDoubleJump = true;
+
+    
     
     //testing tools
     public bool testChar;
+    public float testAxis;
     bool triggerDown = false;
 
     Vector3 selfPos;
@@ -21,6 +24,8 @@ public class CharacterMovementScript : Photon.MonoBehaviour {
 
     private void Start()
     {
+        movementSpeed = runSpeed;
+
         //Get rigidbody
         rb = GetComponent<Rigidbody2D>();
 
@@ -32,6 +37,7 @@ public class CharacterMovementScript : Photon.MonoBehaviour {
     // Update is called once per frame
     void Update()
     {
+        testAxis = GetStickMovement();
         if (photonView.isMine || dmCon.devMode && testChar)
         {
             if (!dmCon.gameObject.GetComponent<GameStatusController>().restartPause && !dmCon.gameObject.GetComponent<GameStatusController>().paused)
@@ -81,6 +87,7 @@ public class CharacterMovementScript : Photon.MonoBehaviour {
                 rb.AddForce(Vector2.up * jumpHeight);
             else if (canDoubleJump)
             {
+                rb.velocity = new Vector2(rb.velocity.x, 0.1f);
                 rb.AddForce(Vector2.up * jumpHeight);
                 canDoubleJump = false;
             }
@@ -159,7 +166,7 @@ public class CharacterMovementScript : Photon.MonoBehaviour {
     //Return stick current input
     float GetStickMovement()
     {
-        return Input.GetAxis("Horizontal");
+        return Input.GetAxis("HorizontalStick");
     }
     //make sure the trigger isn't being held down & check cooldown timer (Set in inspector)
     bool CanAttack()

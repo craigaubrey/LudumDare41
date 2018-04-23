@@ -5,10 +5,11 @@ using UnityEngine.UI;
 
 public class GameStatusController : MonoBehaviour {
     public bool restartPause = true, paused = false;
+    public float restartTimer;
     GameObject startGameGraphic;
     //Score
     public int p1Points = 0, p2Points = 0;
-    string p1NameTest = "John", p2NameTest = "Bob";
+    public string p1NameTest = "John", p2NameTest = "Bob";
 
     private void Start()
     {
@@ -19,6 +20,8 @@ public class GameStatusController : MonoBehaviour {
     private void Update()
     {
         GameObject.Find("Score_Txt").GetComponent<Text>().text = GetScoreText();
+
+        StartRound();
     }
 
     public void GoalScored()
@@ -31,6 +34,23 @@ public class GameStatusController : MonoBehaviour {
         GetComponent<PhotonView>().RPC("RPC_GoalScored", PhotonTargets.All, p1Points, p2Points);
     }
 
+    bool canStartCoroutine = true;
+    void StartRound()
+    {
+        if(restartPause && restartTimer > 0)
+        {
+            startGameGraphic.SetActive(true);
+            restartTimer -= Time.deltaTime;
+            GameObject.Find("StartRound_Txt").GetComponent<Text>().text = restartTimer.ToString("0.0");
+            canStartCoroutine = true;
+        }
+        if(restartPause && restartTimer <= 0 && canStartCoroutine)
+        {
+            canStartCoroutine = false;
+            StartCoroutine(StartGameTimer());
+        }
+    }
+
     public void StartGameInitializer()
     {
         GetComponent<PhotonView>().RPC("RPC_StartGameCountdown", PhotonTargets.All);
@@ -38,8 +58,7 @@ public class GameStatusController : MonoBehaviour {
 
     IEnumerator StartGameTimer()
     {
-        yield return new WaitForSeconds(2);
-        startGameGraphic.SetActive(true);
+        GameObject.Find("StartRound_Txt").GetComponent<Text>().text = "START";
         yield return new WaitForSeconds(0.8f);
         startGameGraphic.SetActive(false);
         restartPause = false;
@@ -59,7 +78,7 @@ public class GameStatusController : MonoBehaviour {
 
     [PunRPC]
     void RPC_StartGameCountdown() {
-        StartCoroutine(StartGameTimer());
+        restartTimer = 4;
     }
 
     ///

@@ -16,8 +16,8 @@ TagManager:
   - 
   - 
   - Ball
-  - 
-  - 
+  - Goal
+  - Character
   - 
   - 
   - 
@@ -42,4 +42,7 @@ TagManager:
   m_SortingLayers:
   - name: Default
     uniqueID: 0
+    locked: 0
+  - name: n
+    uniqueID: 1325112557
     locked: 0

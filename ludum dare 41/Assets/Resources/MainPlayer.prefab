@@ -22,11 +22,14 @@ GameObject:
   - component: {fileID: 212076234135285284}
   - component: {fileID: 114902147476690318}
   - component: {fileID: 114736171044508406}
+  - component: {fileID: 114971800894743700}
   - component: {fileID: 50273308533130978}
   - component: {fileID: 61547356121836328}
   - component: {fileID: 114107487314658694}
   - component: {fileID: 114711961820769872}
-  m_Layer: 0
+  - component: {fileID: 114640634595178592}
+  - component: {fileID: 114545241818022128}
+  m_Layer: 10
   m_Name: MainPlayer
   m_TagString: character
   m_Icon: {fileID: 0}
@@ -45,7 +48,7 @@ GameObject:
   - component: {fileID: 61029110777740018}
   - component: {fileID: 114753522400542662}
   - component: {fileID: 114073695245089444}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: Melee
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -196,12 +199,36 @@ MonoBehaviour:
   ownershipTransfer: 0
   ObservedComponents:
   - {fileID: 114711961820769872}
-  - {fileID: 0}
+  - {fileID: 114640634595178592}
   ObservedComponentsFoldoutOpen: 1
   viewIdField: 0
   instantiationId: -1
   currentMasterID: -1
   isRuntimeInstantiated: 0
+--- !u!114 &114545241818022128
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1348276408622648}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b53cb81190c22a3479e80074aa664350, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &114640634595178592
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1348276408622648}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0e7cb724808c322458aa4d15f5035fa9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_SynchronizeVelocity: 1
+  m_SynchronizeAngularVelocity: 1
 --- !u!114 &114711961820769872
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -291,6 +318,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   meleePower: 0
   attacking: 0
+  hitCooldownTimer: 0
+  hitCooldown: 0.5
+  hitHorizForce: 120
+  hitVertForce: 60
+  deadHorizForce: 450
+  deadVertForce: 350
 --- !u!114 &114902147476690318
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -305,9 +338,26 @@ MonoBehaviour:
   movementSpeed: 8
   jumpHeight: 300
   jumpSpeed: 4
+  runSpeed: 8
+  carrySpeed: 5
   attackCooldownTimer: 0
   attackCooldown: 1
+  canDoubleJump: 1
   testChar: 0
+  testAxis: 0
+--- !u!114 &114971800894743700
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1348276408622648}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ee04fe95fd0debe4cb50be25d980665d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  HP: 2
+  restoreHpTime: 4
 --- !u!212 &212076234135285284
 SpriteRenderer:
   m_ObjectHideFlags: 1
@@ -343,7 +393,7 @@ SpriteRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_Sprite: {fileID: 10913, guid: 0000000000000000f000000000000000, type: 0}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_Color: {r: 0.35294116, g: 0, b: 0, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0

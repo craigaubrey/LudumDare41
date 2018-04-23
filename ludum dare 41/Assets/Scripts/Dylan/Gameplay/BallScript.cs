@@ -48,11 +48,19 @@ public class BallScript : MonoBehaviour {
     [PunRPC]
     void RPC_DropBall()
     {
+        bool dropped = false;
+        if (carrier != null)
+            dropped = true;
         carrier = null;
         gameObject.transform.parent = null;
         
         StartCoroutine(WaitToResetBallComps());
-        GetComponent<Rigidbody2D>().AddForce(Vector2.up * 50);
+
+        //REset move speed
+        GameObject.Find("Controller").GetComponent<CharacterContainer>().myCharacter.GetComponent<CharacterMovementScript>().movementSpeed = GameObject.Find("Controller").GetComponent<CharacterContainer>().myCharacter.GetComponent<CharacterMovementScript>().runSpeed;
+
+        if (dropped)
+            GetComponent<Rigidbody2D>().AddForce(Vector2.up * 100);
     }
 
     IEnumerator WaitToResetBallComps()
