@@ -9,8 +9,16 @@ public class ServerHandler : MonoBehaviour {
     [SerializeField]
     public List<string> sceneList;
 
-	// Use this for initialization
-	public void FindOnlineMatch () { 
+    GameObject findingGameObj;
+
+    private void Start()
+    {
+        findingGameObj = GameObject.Find("FindingGame_Panel");
+        findingGameObj.SetActive(false);
+    }
+
+    // Use this for initialization
+    public void FindOnlineMatch () {
         PhotonNetwork.ConnectUsingSettings("v1.0");
 	}
 	
@@ -28,7 +36,7 @@ public class ServerHandler : MonoBehaviour {
     void OnPhotonRandomJoinFailed()
     {
         print("Failed to join random room");
-
+        findingGameObj.SetActive(true);
         RoomOptions options = new RoomOptions() { isVisible = true, MaxPlayers = 2 };
         int randomName = Random.Range(0, 100);
 
@@ -50,6 +58,13 @@ public class ServerHandler : MonoBehaviour {
         {
             GetComponent<PhotonView>().RPC("RPC_StartGame", PhotonTargets.All, level);
         }
+    }
+
+    public void CancelGameFind()
+    {
+        PhotonNetwork.LeaveRoom();
+        PhotonNetwork.Disconnect();
+        findingGameObj.SetActive(false);
     }
 
     /// <summary>

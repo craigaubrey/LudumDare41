@@ -54,4 +54,5 @@ MonoBehaviour:
   - RPC_PausePlayAndStartCoroutine
   - SetCharacterSpriteColour
   - RPC_EndGame
+  - RPC_GiveOtherUserName
   DisableAutoOpenWizard: 1

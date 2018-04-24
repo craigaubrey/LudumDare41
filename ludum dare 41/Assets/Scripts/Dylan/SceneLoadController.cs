@@ -38,6 +38,7 @@ public class SceneLoadController : MonoBehaviour
             if (PhotonNetwork.isMasterClient)
                 SpawnBall();
             GetComponent<GameStatusController>().StartGameInitializer();
+            GetUsername();
 
         }
         else if (dmCon.devMode)
@@ -88,6 +89,26 @@ public class SceneLoadController : MonoBehaviour
         g.name = "Ball_Obj";
     }
 
+    void GetUsername()
+    {
+        string name = GameObject.Find("UsernameHolder_Obj").GetComponent<UsernameScript>().GetUsername();
+        if (PhotonNetwork.isMasterClient)
+            GetComponent<GameStatusController>().p1NameTest = name;
+        else
+            GetComponent<GameStatusController>().p2NameTest = name;
+
+        GetComponent<PhotonView>().RPC("RPC_GiveOtherUserName", PhotonTargets.OthersBuffered, name);
+    }
+
+    [PunRPC]
+    void RPC_GiveOtherUserName(string name)
+    {
+        if (!PhotonNetwork.isMasterClient)
+            GetComponent<GameStatusController>().p1NameTest = name;
+        else
+            GetComponent<GameStatusController>().p2NameTest = name;
+    }
+
     void SetUpDevGame()
     {
         GameObject g = GameObject.Instantiate(mainPlayer, mainPlayer.transform.position, Quaternion.identity);
@@ -99,6 +120,7 @@ public class SceneLoadController : MonoBehaviour
     public void LeaveRoom()
     {
         PhotonNetwork.LeaveRoom();
+        LoadMainMenu();
     }
 
     public void LoadMainMenu()
