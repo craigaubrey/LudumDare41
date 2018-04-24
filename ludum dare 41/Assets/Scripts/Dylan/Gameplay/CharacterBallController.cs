@@ -21,5 +21,8 @@ public class CharacterBallController : MonoBehaviour {
 
         ballScript.gameObject.GetComponent<Rigidbody2D>().isKinematic = true;
         ballScript.gameObject.GetComponent<CircleCollider2D>().enabled = false;
+
+        
+        GameObject.Find("Controller").GetComponent<AudioSource>().PlayOneShot(Resources.Load<AudioClip>("Ball Pickup"));
     }
 }

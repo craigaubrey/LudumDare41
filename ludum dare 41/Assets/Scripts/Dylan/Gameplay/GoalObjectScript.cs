@@ -48,8 +48,9 @@ public class GoalObjectScript : MonoBehaviour {
     {
         print("apply force");
         Rigidbody2D rb = GameObject.Find("Controller").GetComponent<CharacterContainer>().myCharacter.GetComponent<Rigidbody2D>();
-        
-        if(rb.gameObject.transform.position.x > transform.position.x)
+        GameObject.Find("Controller").GetComponent<AudioSource>().PlayOneShot(Resources.Load<AudioClip>("Goal"));
+
+        if (rb.gameObject.transform.position.x > transform.position.x)
         {
             rb.AddForce(Vector2.up * goalUpForce);
             rb.AddForce(Vector2.right * goalHorizForce);
