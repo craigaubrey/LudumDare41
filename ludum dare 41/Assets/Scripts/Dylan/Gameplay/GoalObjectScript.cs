@@ -33,6 +33,7 @@ public class GoalObjectScript : MonoBehaviour {
             else if(!gameObject.GetComponent<PhotonView>().isMine && collision.gameObject.GetComponent<PhotonView>().isMine && canScore)
             {
                 canScore = false;
+                
                 //For UI Updates and such
                 GameObject.Find("Controller").GetComponent<GameStatusController>().GoalScored();
                 //TO reset play

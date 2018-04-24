@@ -1,4 +1,8 @@
 sceneSetups:
+<<<<<<< HEAD
 - path: Assets/CraigTest.unity
+=======
+- path: Assets/Mechlevel.unity
+>>>>>>> 64dc713ea67144dd2433fe0d63ac005fbcd1bc84
   isLoaded: 1
   isActive: 1
