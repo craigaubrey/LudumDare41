@@ -8,7 +8,9 @@ public class CharacterMovementScript : Photon.MonoBehaviour {
     public float attackCooldownTimer, attackCooldown;
     public bool canDoubleJump = true;
 
-    
+    Animator animator;
+
+    bool rightMove, leftMove;
     
     //testing tools
     public bool testChar;
@@ -28,10 +30,14 @@ public class CharacterMovementScript : Photon.MonoBehaviour {
 
         //Get rigidbody
         rb = GetComponent<Rigidbody2D>();
+        animator = GetComponent<Animator>();
 
         //Get instances
         dmCon = GameObject.Find("Controller").GetComponent<DevModeController>();
         melee = transform.GetChild(0).GetComponent<MeleeScript>();
+
+        leftMove = false;
+        rightMove = false;
     }
 
     // Update is called once per frame
@@ -48,6 +54,7 @@ public class CharacterMovementScript : Photon.MonoBehaviour {
                 CheckJump();
                 CheckMelee();
                 CheckDoubleJump();
+                CheckMoveAnimation();
                 if (attackCooldownTimer > 0)
                     attackCooldownTimer -= Time.deltaTime;
             }
@@ -63,7 +70,11 @@ public class CharacterMovementScript : Photon.MonoBehaviour {
             transform.position = new Vector3(transform.position.x + GetSpeed(), transform.position.y, transform.position.z);
             //Rotate to face    
             transform.localRotation = new Quaternion(0, 0, 0, 0);
+            //set moving for naimation
+            rightMove = true;
         }
+        else
+            rightMove = false;
     }
 
     //Moving left
@@ -75,7 +86,11 @@ public class CharacterMovementScript : Photon.MonoBehaviour {
             transform.position = new Vector3(transform.position.x - GetSpeed(), transform.position.y, transform.position.z);
             //Rotation
             transform.localRotation = new Quaternion(0, 180, 0, 0);
+            //set moving for animation
+            leftMove = true;
         }
+        else
+            leftMove = false;
     }
 
     //Jumping
@@ -125,6 +140,16 @@ public class CharacterMovementScript : Photon.MonoBehaviour {
             if (rb.velocity.y == 0)
                 canDoubleJump = true;
         }
+    }
+
+    void CheckMoveAnimation()
+    {
+        if(!leftMove && !rightMove)
+        {
+            animator.SetBool("Walking", false);
+        }
+        else
+            animator.SetBool("Walking", true);
     }
 
     /// <summary>

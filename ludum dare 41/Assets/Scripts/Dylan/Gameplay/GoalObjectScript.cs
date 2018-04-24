@@ -21,7 +21,7 @@ public class GoalObjectScript : MonoBehaviour {
     void RPC_SetGoalRed()
     {
         if(!GetComponent<PhotonView>().isMine)
-            GetComponent<SpriteRenderer>().color = Color.red;
+            transform.GetChild(0).GetComponent<ParticleSystem>().startColor = Color.red;
     }
 
     private void OnCollisionEnter2D(Collision2D collision)

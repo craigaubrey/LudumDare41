@@ -17,7 +17,7 @@ public class BallScript : MonoBehaviour {
     {
         if (carrier != null)
         {
-            transform.position = carrier.transform.position;
+            transform.position = new Vector2(carrier.transform.position.x +0.05f, carrier.transform.position.y -0.04f);
             gameObject.GetComponent<Rigidbody2D>().isKinematic = true;
             gameObject.GetComponent<CircleCollider2D>().enabled = false;
         }
