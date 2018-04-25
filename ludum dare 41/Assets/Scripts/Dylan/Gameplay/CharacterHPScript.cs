@@ -37,14 +37,26 @@ public class CharacterHPScript : MonoBehaviour {
 
     public void UpdateHealth(int hp)
     {
-        print(hp);
-        GetComponent<PhotonView>().RPC("RPC_UpdateHP", PhotonTargets.All, hp);
+        if (GameObject.Find("SceneDataController_Obj").GetComponent<InterSceneController>().GetOnlineStatus() == true)
+            GetComponent<PhotonView>().RPC("RPC_UpdateHP", PhotonTargets.All, hp);
+        else
+            OfflineUpdateHealth(hp);
+    }
+
+    void OfflineUpdateHealth(int hp)
+    {
+        HP = hp;
+
+        //To start timer to set hp back to 2
+        if (hp == 1)
+        {
+            restoreHPTimer = restoreHpTime;
+        }
     }
 
     [PunRPC]
     void RPC_UpdateHP(int hp)
     {
-        print("rpc is " + hp);
         HP = hp;
 
         //To start timer to set hp back to 2

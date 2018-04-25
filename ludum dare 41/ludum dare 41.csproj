@@ -327,9 +327,13 @@
     <Compile Include="Assets\Scripts\Dylan\Gameplay\GameplayController.cs" />
     <Compile Include="Assets\Scripts\Dylan\Gameplay\GameStatusController.cs" />
     <Compile Include="Assets\Scripts\Dylan\Gameplay\GoalObjectScript.cs" />
+    <Compile Include="Assets\Scripts\Dylan\Gameplay\InterSceneController.cs" />
     <Compile Include="Assets\Scripts\Dylan\Gameplay\MeleeScript.cs" />
     <Compile Include="Assets\Scripts\Dylan\Gameplay\Platforms\PlatformMoveScript.cs" />
     <Compile Include="Assets\Scripts\Dylan\Gameplay\Timer\GameTimer.cs" />
+    <Compile Include="Assets\Scripts\Dylan\GameplayUI\GameplayUIController.cs" />
+    <Compile Include="Assets\Scripts\Dylan\MainMenu\GameSetupSCript.cs" />
+    <Compile Include="Assets\Scripts\Dylan\MainMenu\MainMenuUIController.cs" />
     <Compile Include="Assets\Scripts\Dylan\Networking\ServerHandler.cs" />
     <Compile Include="Assets\Scripts\Dylan\SceneLoadController.cs" />
     <Compile Include="Assets\Scripts\Dylan\UsernameScript.cs" />

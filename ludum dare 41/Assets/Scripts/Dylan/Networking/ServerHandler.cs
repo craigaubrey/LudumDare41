@@ -9,23 +9,23 @@ public class ServerHandler : MonoBehaviour {
     [SerializeField]
     public List<string> sceneList;
 
-    GameObject findingGameObj;
+    //Controller
+    GameObject controller, sceneDataObj;
 
     private void Start()
     {
-        findingGameObj = GameObject.Find("FindingGame_Panel");
-        findingGameObj.SetActive(false);
+        controller = GameObject.Find("Controller");
+        sceneDataObj = GameObject.Find("SceneDataController_Obj");
     }
 
     // Use this for initialization
-    public void FindOnlineMatch () {
+    public void FindOnlineMatch_Click () {
         PhotonNetwork.ConnectUsingSettings("v1.0");
 	}
 	
     //Join Lobby
 	void OnConnectedToMaster()
     {
-        print("Joined Lobby");
         //Randomize a name
         string name = "playaaa" + Random.Range(1, 1000000).ToString();
         PhotonNetwork.player.name = name;
@@ -35,8 +35,7 @@ public class ServerHandler : MonoBehaviour {
     //Failed ot join room, set up room
     void OnPhotonRandomJoinFailed()
     {
-        print("Failed to join random room");
-        findingGameObj.SetActive(true);
+        controller.GetComponent<MainMenuUIController>().ChangeUI(2);
         RoomOptions options = new RoomOptions() { isVisible = true, MaxPlayers = 2 };
         int randomName = Random.Range(0, 100);
 
@@ -44,11 +43,10 @@ public class ServerHandler : MonoBehaviour {
         level = Random.Range(1, sceneList.Count+1);
     }
 
-    //Joined a room
+    //Joined a room(called when created room too)
     void OnJoinedRoom()
     {
         print("joined " + PhotonNetwork.room.name);
-        GameObject.Find("Text").GetComponent<Text>().text = "In game " + PhotonNetwork.room.name;
     }
 
     //a player has joined this room, move to scene
@@ -60,11 +58,12 @@ public class ServerHandler : MonoBehaviour {
         }
     }
 
+    //Cancel finding a game, return to menu
     public void CancelGameFind()
     {
         PhotonNetwork.LeaveRoom();
         PhotonNetwork.Disconnect();
-        findingGameObj.SetActive(false);
+        controller.GetComponent<MainMenuUIController>().ChangeUI(0);
     }
 
     /// <summary>
@@ -74,6 +73,7 @@ public class ServerHandler : MonoBehaviour {
     [PunRPC]
     public void RPC_StartGame(int level)
     {
+        sceneDataObj.GetComponent<InterSceneController>().SetOnlineStatus(true);
         PhotonNetwork.LoadLevel(level);
     }
 }

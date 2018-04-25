@@ -31,7 +31,7 @@ public class SceneLoadController : MonoBehaviour
     void InitGame()
     {
 
-        if (!dmCon.devMode)
+        if (!dmCon.devMode && GameObject.Find("SceneDataController_Obj").GetComponent<InterSceneController>().GetOnlineStatus() == true)
         {
             SpawnPlayer();
             SpawnGoals();
@@ -41,8 +41,8 @@ public class SceneLoadController : MonoBehaviour
             GetUsername();
 
         }
-        else if (dmCon.devMode)
-            SetUpDevGame();
+        else
+            SetupOfflineGame();
 
         
     }
@@ -91,7 +91,7 @@ public class SceneLoadController : MonoBehaviour
 
     void GetUsername()
     {
-        string name = GameObject.Find("UsernameHolder_Obj").GetComponent<UsernameScript>().GetUsername();
+        string name = GameObject.Find("SceneDataController_Obj").GetComponent<UsernameScript>().GetUsername();
         if (PhotonNetwork.isMasterClient)
             GetComponent<GameStatusController>().p1NameTest = name;
         else
@@ -109,23 +109,34 @@ public class SceneLoadController : MonoBehaviour
             GetComponent<GameStatusController>().p2NameTest = name;
     }
 
-    void SetUpDevGame()
+    void SetupOfflineGame()
     {
-        GameObject g = GameObject.Instantiate(mainPlayer, mainPlayer.transform.position, Quaternion.identity);
-        g.GetComponent<CharacterMovementScript>().testChar = false;
-        g = GameObject.Instantiate(mainPlayer, mainPlayer.transform.position, Quaternion.identity);
-        g.GetComponent<CharacterMovementScript>().testChar = true;
+        //Spawn Characters
+        GameObject g = GameObject.Instantiate(mainPlayer, p1StartPos, p1Rot);
+        g.GetComponent<CharacterMainController>().SetOfflinePlayer(1);
+        g = GameObject.Instantiate(mainPlayer, p2StartPos, p2Rot);
+        g.GetComponent<CharacterMainController>().SetOfflinePlayer(2);
+        //Spawn Goals
+        g = GameObject.Instantiate(goalObject, p1GoalPos, Quaternion.identity);
+        g.GetComponent<GoalObjectScript>().SetOfflinePlayer(1);
+        g = GameObject.Instantiate(goalObject, p2GoalPos, Quaternion.identity);
+        g.GetComponent<GoalObjectScript>().SetOfflinePlayer(2);
+        //Spawn Ball
+        GameObject.Instantiate(ballObj, new Vector3(0, 4.5f, 0), ballObj.transform.rotation);
+        g.name = "Ball_Obj";
     }
 
     public void LeaveRoom()
     {
-        PhotonNetwork.LeaveRoom();
+        if (GameObject.Find("SceneDataController_Obj").GetComponent<InterSceneController>().GetOnlineStatus() == true)
+            PhotonNetwork.LeaveRoom();
         LoadMainMenu();
     }
 
     public void LoadMainMenu()
     {
-        PhotonNetwork.Disconnect();
+        if (GameObject.Find("SceneDataController_Obj").GetComponent<InterSceneController>().GetOnlineStatus() == true)
+            PhotonNetwork.Disconnect();
         SceneManager.LoadScene(0);
     }
 }

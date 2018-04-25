@@ -1,6 +1,6 @@
 WindowsStandalone
 PlayerPath?
-C:/Users/Dnich/Desktop/LD41 Game.exe
+C:/Users/Dnich/Desktop/BallDash Arcade PostUpdate.exe
 SceneListBegin?
 Assets/MainMenu.unity
 Assets/DylanTest.unity
@@ -137,7 +137,7 @@ bc68edb0af574bf79f9550ead8ebae5c UnityEngine.HoloLens.dll:UnityEngine.Audio.Audi
 463516d5b5fe8e67a0a24c48f2095b04 UnityEngine.HoloLens.dll:UnityEngine.EventSystems.HoloLensInputModule
 c2275a8bfbb9f9942cad75ecdfded41d UnityEngine.HoloLens.dll:UnityEngine.XR.WSA.SpatialMappingCollider
 45f3431f0103c41611e8d4eec3d439df UnityEngine.HoloLens.dll:UnityEngine.XR.WSA.SpatialMappingRenderer
-d13c6647cbf1595457d7d04043195804 Assembly-CSharp.dll:.GoalObjectScript
+05524b8f659e7bfe5756d1335fec24ba Assembly-CSharp.dll:.GoalObjectScript
 6801ecb88714d771ef3ac55cdd415e71 Assembly-CSharp.dll:.CharacterHPScript
 4ce2b1853c9a392b036a6a654be90ccb Assembly-CSharp.dll:.OnClickInstantiate
 579ff77b7cd4fe20206880e823da835d Assembly-CSharp.dll:.PlatformMoveScript
@@ -201,4 +201,7 @@ d1755adc44fcb9e44c42a5889d35f7a0 Assembly-CSharp.dll:.MoveByKeys
 57734ae8a5fa8c3da017014367290dc5 Assembly-CSharp.dll:.MeleeScript
 604f5f55c1cc414f64da1990b36ff015 Assembly-CSharp.dll:.PhotonView
 b2dc25029b6f083ffbbdf9df269f825a Assembly-CSharp.dll:.InRoomChat
-2d75dbaf0fe8ca03e8ad43787cf5b711 Assembly-CSharp.dll:.CharacterMovementScript
+efb9a31091a54f0486224177a652ba62 Assembly-CSharp.dll:.CharacterMovementScript
+05524b8f659e7bfe5756d1335fec24ba Assembly-CSharp.dll:.MainMenuUIController
+05524b8f659e7bfe5756d1335fec24ba Assembly-CSharp.dll:.InterSceneController
+bb0e90c53f2e02b26cd04e662f658169 Assembly-CSharp.dll:.GameSetupSCript

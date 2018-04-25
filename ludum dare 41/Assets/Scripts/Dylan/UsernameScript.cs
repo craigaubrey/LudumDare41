@@ -7,12 +7,21 @@ using UnityEngine.SceneManagement;
 public class UsernameScript : MonoBehaviour {
 
     string userName = "";
-    GameObject userNameBox;
+    GameObject userNameBox;    
+    //Controller
+    GameObject controller;
 
     private void Start()
     {
         DontDestroyOnLoad(gameObject);
+
+        if (FindObjectsOfType(GetType()).Length > 1)
+        {
+            Destroy(gameObject);
+        }
+
         userNameBox = GameObject.Find("NameInput_Panel");
+        controller = GameObject.Find("Controller");
         if (userName == null)
         {
             userNameBox.SetActive(false);
@@ -24,7 +33,7 @@ public class UsernameScript : MonoBehaviour {
         if (GameObject.Find("name_Text").GetComponent<Text>().text != "")
         {
             userName = GameObject.Find("name_Text").GetComponent<Text>().text;
-            userNameBox.SetActive(false);
+            controller.GetComponent<MainMenuUIController>().ChangeUI(0);
         }
     }
 

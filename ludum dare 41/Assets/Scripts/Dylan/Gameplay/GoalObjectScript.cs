@@ -3,17 +3,20 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class GoalObjectScript : MonoBehaviour {
-    [SerializeField]
-    float goalUpForce;
-    [SerializeField]
-    float goalHorizForce;
 
     bool canScore = true;
+
+    //For offline Mode
+    int offlinePlayer;
+
+    public void SetOfflinePlayer(int playerNum) { offlinePlayer = playerNum; }
+    public int GetOfflinePlayer() { return offlinePlayer; }
 
     private void Awake()
     {
         //Set color on other player client
-        GetComponent<PhotonView>().RPC("RPC_SetGoalRed", PhotonTargets.All);
+        if (GameObject.Find("SceneDataController_Obj").GetComponent<InterSceneController>().GetOnlineStatus() == true)
+            GetComponent<PhotonView>().RPC("RPC_SetGoalRed", PhotonTargets.All);
     }
 
     //Setting up opposition goal as red
@@ -30,37 +33,42 @@ public class GoalObjectScript : MonoBehaviour {
         {
             if (gameObject.GetComponent<PhotonView>().isMine && collision.gameObject.GetComponent<PhotonView>().isMine)
                 print("Own goal collision");
+            //For Online Play
             else if(!gameObject.GetComponent<PhotonView>().isMine && collision.gameObject.GetComponent<PhotonView>().isMine && canScore)
             {
                 canScore = false;
-                
                 //For UI Updates and such
-                GameObject.Find("Controller").GetComponent<GameStatusController>().GoalScored();
+                GameObject.Find("Controller").GetComponent<GameStatusController>().GoalScored(0);
                 //TO reset play
-                GetComponent<PhotonView>().RPC("RPC_ApplyForceAfterGoal", PhotonTargets.All);
+                GetComponent<PhotonView>().RPC("RPC_ApplyForceAfterGoal", PhotonTargets.All, transform.position.x);
                 GetComponent<PhotonView>().RPC("RPC_PausePlayAndStartCoroutine", PhotonTargets.All);
+            }
+            else if (offlinePlayer != collision.gameObject.GetComponent<CharacterMainController>().GetOfflinePlayer() && canScore && GameObject.Find("SceneDataController_Obj").GetComponent<InterSceneController>().GetOnlineStatus() == false)
+            {
+                canScore = false;
+                int scorer = collision.gameObject.GetComponent<CharacterMainController>().GetOfflinePlayer();
+                
+
+                //For UI Updates and such
+                GameObject.Find("Controller").GetComponent<GameStatusController>().GoalScored(scorer);
+                //TO reset play
+                RPC_ApplyForceAfterGoal(transform.position.x);
+                RPC_PausePlayAndStartCoroutine();
             }
         }
     }
 
     [PunRPC]
-    void RPC_ApplyForceAfterGoal()
+    void RPC_ApplyForceAfterGoal(float xPosOfGoal)
     {
-        print("apply force");
-        Rigidbody2D rb = GameObject.Find("Controller").GetComponent<CharacterContainer>().myCharacter.GetComponent<Rigidbody2D>();
-        GameObject.Find("Controller").GetComponent<AudioSource>().PlayOneShot(Resources.Load<AudioClip>("Goal"));
-
-        if (rb.gameObject.transform.position.x > transform.position.x)
-        {
-            rb.AddForce(Vector2.up * goalUpForce);
-            rb.AddForce(Vector2.right * goalHorizForce);
-        }
+        if (GameObject.Find("SceneDataController_Obj").GetComponent<InterSceneController>().GetOnlineStatus() == true)
+            GameObject.Find("Controller").GetComponent<CharacterContainer>().myCharacter.GetComponent<CharacterMovementScript>().ApplyForceAfterGoal(xPosOfGoal);
         else
         {
-            rb.AddForce(Vector2.up * goalUpForce);
-            rb.AddForce(Vector2.right * goalHorizForce);
+            GameObject[] chars = GameObject.FindGameObjectsWithTag("character");
+            foreach (GameObject g in chars)
+                g.GetComponent<CharacterMovementScript>().ApplyForceAfterGoal(xPosOfGoal);
         }
-
     }
 
     [PunRPC]

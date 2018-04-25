@@ -3,12 +3,14 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class CharacterMainController : MonoBehaviour {
+    int offlinePlayer = 1;
 
+    public void SetOfflinePlayer(int playerNum) { offlinePlayer = playerNum; }
+    public int GetOfflinePlayer() { return offlinePlayer; }
 
 	// Use this for initialization
-	void Awake () {
-        GetComponent<PhotonView>().RPC("SetCharacterSpriteColour", PhotonTargets.All);
-        print("jobby");
+	void start () {
+           // GetComponent<PhotonView>().RPC("SetCharacterSpriteColour", PhotonTargets.All);
 	}
 	
     [PunRPC]

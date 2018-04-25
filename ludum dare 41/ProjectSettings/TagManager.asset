@@ -6,6 +6,7 @@ TagManager:
   tags:
   - character
   - ball
+  - MovingPlatform
   layers:
   - Default
   - TransparentFX

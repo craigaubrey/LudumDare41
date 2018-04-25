@@ -29,12 +29,21 @@ public class MeleeScript : MonoBehaviour {
 
     public void DoAttack()
     {
-        
-        GetComponent<PhotonView>().RPC("RPC_DoAttack", PhotonTargets.Others);
+        if (GameObject.Find("SceneDataController_Obj").GetComponent<InterSceneController>().GetOnlineStatus() == true)
+            GetComponent<PhotonView>().RPC("RPC_DoAttack", PhotonTargets.Others);
+        else
+            OfflineDoAttack();
     }
 
     [PunRPC]
     void RPC_DoAttack()
+    {
+        attacking = true;
+        StartCoroutine(AttackingCoroutine());
+        GetComponent<Collider2D>().enabled = true;
+    }
+    
+    void OfflineDoAttack()
     {
         attacking = true;
         StartCoroutine(AttackingCoroutine());

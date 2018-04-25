@@ -8,12 +8,17 @@ public class CharacterMovementScript : Photon.MonoBehaviour {
     public float attackCooldownTimer, attackCooldown;
     public bool canDoubleJump = true;
 
+    [SerializeField]
+    float goalUpForce;
+    [SerializeField]
+    float goalHorizForce;
+
+
     Animator animator;
 
     bool rightMove, leftMove;
     
     //testing tools
-    public bool testChar;
     public float testAxis;
     bool triggerDown = false;
 
@@ -24,10 +29,10 @@ public class CharacterMovementScript : Photon.MonoBehaviour {
     //Melee Object
     MeleeScript melee;
 
+
     private void Start()
     {
         movementSpeed = runSpeed;
-
         //Get rigidbody
         rb = GetComponent<Rigidbody2D>();
         animator = GetComponent<Animator>();
@@ -44,8 +49,10 @@ public class CharacterMovementScript : Photon.MonoBehaviour {
     void Update()
     {
         testAxis = GetStickMovement();
-        if (photonView.isMine || dmCon.devMode && testChar)
+        //player check
+        if (photonView.isMine || GameObject.Find("SceneDataController_Obj").GetComponent<InterSceneController>().GetOnlineStatus() == false)
         {
+            //Pause check
             if (!dmCon.gameObject.GetComponent<GameStatusController>().restartPause && !dmCon.gameObject.GetComponent<GameStatusController>().paused)
             {
                 //Left and right movement
@@ -96,7 +103,7 @@ public class CharacterMovementScript : Photon.MonoBehaviour {
     //Jumping
     void CheckJump()
     {
-        if (Input.GetButtonDown("Jump"))
+        if (Input.GetButtonDown("Jump" + GetComponent<CharacterMainController>().GetOfflinePlayer()))
         {
             if(Grounded())
                 rb.AddForce(Vector2.up * jumpHeight);
@@ -113,7 +120,7 @@ public class CharacterMovementScript : Photon.MonoBehaviour {
     void CheckMelee()
     {
         //right triger down and check if player is able to attack
-        if (Input.GetAxis("Right Trigger Melee Attack") < -0.4f && CanAttack())
+        if (Input.GetAxis("Right Trigger Melee Attack" + GetComponent<CharacterMainController>().GetOfflinePlayer()) < -0.4f && CanAttack())
         {
             print("attack");
             if (transform.rotation.y == 0)
@@ -129,7 +136,7 @@ public class CharacterMovementScript : Photon.MonoBehaviour {
         }
 
         //Recognize if the trigger is back up
-        if (Input.GetAxis("Right Trigger Melee Attack") > -0.3f)
+        if (Input.GetAxis("Right Trigger Melee Attack" + GetComponent<CharacterMainController>().GetOfflinePlayer()) > -0.3f)
             triggerDown = false;
     }
 
@@ -173,6 +180,37 @@ public class CharacterMovementScript : Photon.MonoBehaviour {
         transform.position = selfPos;
     }
 
+    public void ApplyForceAfterGoal(float goalXPos)
+    {
+        print("apply force");
+        Rigidbody2D rb = GetComponent<Rigidbody2D>();
+        GameObject.Find("Controller").GetComponent<AudioSource>().PlayOneShot(Resources.Load<AudioClip>("Goal"));
+        print(goalXPos);
+
+        if (transform.position.x > goalXPos)
+        {
+            rb.AddForce(Vector2.up * goalUpForce);
+            rb.AddForce(Vector2.right * goalHorizForce);
+        }
+        else
+        {
+            rb.AddForce(Vector2.up * goalUpForce);
+            rb.AddForce(Vector2.left * goalHorizForce);
+        }
+
+    }
+
+    private void OnCollisionEnter2D(Collision2D collision)
+    {
+        if (collision.gameObject.tag == "MovingPlatform" && transform.position.y > collision.gameObject.transform.position.y)
+            gameObject.transform.SetParent(collision.gameObject.transform);
+    }
+
+    private void OnCollisionExit2D(Collision2D collision)
+    {
+        if (collision.gameObject.tag == "MovingPlatform")
+            gameObject.transform.SetParent(null);
+    }
 
     /// <summary>
     /// Getters
@@ -196,7 +234,7 @@ public class CharacterMovementScript : Photon.MonoBehaviour {
     //Return stick current input
     float GetStickMovement()
     {
-        return Input.GetAxis("HorizontalStick");
+        return Input.GetAxis("HorizontalStick" + GetComponent<CharacterMainController>().GetOfflinePlayer());
     }
     float GetVertStick()
     {

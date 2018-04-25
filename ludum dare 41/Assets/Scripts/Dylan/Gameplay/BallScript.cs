@@ -27,13 +27,43 @@ public class BallScript : MonoBehaviour {
 
     public void RestartPlay()
     {
-        GetComponent<PhotonView>().RPC("RPC_DropBall", PhotonTargets.All);
-        GetComponent<PhotonView>().RPC("RPC_ResetBall", PhotonTargets.All);
+        if (GameObject.Find("SceneDataController_Obj").GetComponent<InterSceneController>().GetOnlineStatus() == true)
+        {
+            GetComponent<PhotonView>().RPC("RPC_DropBall", PhotonTargets.All);
+            GetComponent<PhotonView>().RPC("RPC_ResetBall", PhotonTargets.All);
+        }
+        else
+        {
+            RPC_DropBall();
+            RPC_ResetBall();
+        }
+        
     }
 
     public void HitDropBall()
     {
-        GetComponent<PhotonView>().RPC("RPC_DropBall", PhotonTargets.All);
+        if (GameObject.Find("SceneDataController_Obj").GetComponent<InterSceneController>().GetOnlineStatus() == true)
+            GetComponent<PhotonView>().RPC("RPC_DropBall", PhotonTargets.All);
+        else
+            OfflineDropBall();
+    }
+
+    void OfflineDropBall()
+    {
+        bool dropped = false;
+        if (carrier != null)
+        {
+            dropped = true;
+            carrier.GetComponent<CharacterMovementScript>().movementSpeed = carrier.GetComponent<CharacterMovementScript>().runSpeed;
+        }
+            carrier = null;
+        gameObject.transform.parent = null;
+
+        StartCoroutine(WaitToResetBallComps());
+
+     
+        if (dropped)
+            GetComponent<Rigidbody2D>().AddForce(Vector2.up * 100);
     }
 
     ///
@@ -43,6 +73,7 @@ public class BallScript : MonoBehaviour {
     void RPC_ResetBall()
     {
         transform.position = new Vector2(0, 4.5f);
+        GetComponent<Rigidbody2D>().velocity = new Vector2(0, 0);
     }
 
     [PunRPC]
@@ -50,14 +81,18 @@ public class BallScript : MonoBehaviour {
     {
         bool dropped = false;
         if (carrier != null)
+        {
             dropped = true;
+            carrier.GetComponent<CharacterMovementScript>().movementSpeed = carrier.GetComponent<CharacterMovementScript>().runSpeed;
+        }
         carrier = null;
         gameObject.transform.parent = null;
         
         StartCoroutine(WaitToResetBallComps());
 
         //REset move speed
-        GameObject.Find("Controller").GetComponent<CharacterContainer>().myCharacter.GetComponent<CharacterMovementScript>().movementSpeed = GameObject.Find("Controller").GetComponent<CharacterContainer>().myCharacter.GetComponent<CharacterMovementScript>().runSpeed;
+        if (GameObject.Find("SceneDataController_Obj").GetComponent<InterSceneController>().GetOnlineStatus() == true)
+            GameObject.Find("Controller").GetComponent<CharacterContainer>().myCharacter.GetComponent<CharacterMovementScript>().movementSpeed = GameObject.Find("Controller").GetComponent<CharacterContainer>().myCharacter.GetComponent<CharacterMovementScript>().runSpeed;
 
         if (dropped)
             GetComponent<Rigidbody2D>().AddForce(Vector2.up * 100);

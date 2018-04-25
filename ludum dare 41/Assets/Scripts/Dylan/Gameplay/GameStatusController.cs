@@ -6,40 +6,52 @@ using UnityEngine.UI;
 public class GameStatusController : MonoBehaviour {
     public bool restartPause = true, paused = false;
     public float restartTimer;
-    GameObject startGameGraphic;
+    
     //Score
     public int p1Points = 0, p2Points = 0;
     public string p1NameTest = "John", p2NameTest = "Bob";
 
     private void Start()
     {
-        startGameGraphic = GameObject.Find("StartRound_Img");
-        startGameGraphic.SetActive(true);
+        GameObject.Find("Controller").GetComponent<GameplayUIController>().ChangeUI(1);
     }
 
     private void Update()
     {
         GameObject.Find("Score_Txt").GetComponent<Text>().text = GetScoreText();
 
+        //For restarting, checks timer and if paused.
         StartRound();
     }
 
-    public void GoalScored()
+    public void GoalScored(int scoringPlayer)
     {
-        if (PhotonNetwork.isMasterClient)
-            p1Points++;
+        //For online play
+        if (GameObject.Find("SceneDataController_Obj").GetComponent<InterSceneController>().GetOnlineStatus() == true)
+        {
+            if (PhotonNetwork.isMasterClient)
+                p1Points++;
+            else
+                p2Points++;
+            GetComponent<PhotonView>().RPC("RPC_GoalScored", PhotonTargets.All, p1Points, p2Points);
+        }
+        //Offline play
         else
-            p2Points++;
-
-        GetComponent<PhotonView>().RPC("RPC_GoalScored", PhotonTargets.All, p1Points, p2Points);
+        {
+            if (scoringPlayer == 1)
+                p1Points++;
+            else
+                p2Points++;
+        }
     }
 
     bool canStartCoroutine = true;
+
     void StartRound()
     {
         if(restartPause && restartTimer > 0)
         {
-            startGameGraphic.SetActive(true);
+            GameObject.Find("Controller").GetComponent<GameplayUIController>().ChangeUI(1);
             restartTimer -= Time.deltaTime;
             GameObject.Find("StartRound_Txt").GetComponent<Text>().text = restartTimer.ToString("0.0");
             canStartCoroutine = true;
@@ -53,14 +65,17 @@ public class GameStatusController : MonoBehaviour {
 
     public void StartGameInitializer()
     {
-        GetComponent<PhotonView>().RPC("RPC_StartGameCountdown", PhotonTargets.All);
+        if (GameObject.Find("SceneDataController_Obj").GetComponent<InterSceneController>().GetOnlineStatus() == true)
+            GetComponent<PhotonView>().RPC("RPC_StartGameCountdown", PhotonTargets.All);
+        else
+            StartGameCountdown();
     }
 
     IEnumerator StartGameTimer()
     {
         GameObject.Find("StartRound_Txt").GetComponent<Text>().text = "START";
         yield return new WaitForSeconds(0.8f);
-        startGameGraphic.SetActive(false);
+        GameObject.Find("Controller").GetComponent<GameplayUIController>().ChangeUI(0);
         restartPause = false;
     }
 
@@ -70,6 +85,13 @@ public class GameStatusController : MonoBehaviour {
 
     }
 
+    /// <summary>
+    /// For offline local play
+    /// </summary>
+    void StartGameCountdown()
+    {
+        restartTimer = 4;
+    }
     /// <summary>
     /// RPCS
     /// </summary>

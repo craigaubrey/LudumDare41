@@ -9,17 +9,10 @@ public class GameplayController : MonoBehaviour {
 
     int pauseCounter = 0;
 
-    GameObject pauseMenu, mainPauseUI, waitingPauseUI;
 
     private void Awake()
     {
-        pauseMenu = GameObject.Find("PauseMenu_Parent");
-        mainPauseUI = pauseMenu.transform.GetChild(0).gameObject;
-        waitingPauseUI = pauseMenu.transform.GetChild(1).gameObject;
 
-        pauseMenu.SetActive(false);
-        mainPauseUI.SetActive(false);
-        waitingPauseUI.SetActive(false);
     }
 
     private void Update()
@@ -30,8 +23,17 @@ public class GameplayController : MonoBehaviour {
     public void RestartPlay()
     {
         ResetHP();
-        GetComponent<PhotonView>().RPC("RPC_RestartPlayerPos", PhotonTargets.All);
-        GetComponent<PhotonView>().RPC("RPC_WaitForGameStart", PhotonTargets.All);
+        if (GameObject.Find("SceneDataController_Obj").GetComponent<InterSceneController>().GetOnlineStatus() == true)
+        {
+            GetComponent<PhotonView>().RPC("RPC_RestartPlayerPos", PhotonTargets.All);
+            GetComponent<PhotonView>().RPC("RPC_WaitForGameStart", PhotonTargets.All);
+        }
+        else
+        {
+            RPC_RestartPlayerPos();
+            RPC_WaitForGameStart();
+        }
+    
     }
 
     void ResetHP()
@@ -45,7 +47,10 @@ public class GameplayController : MonoBehaviour {
     {
         if (Input.GetButtonDown("Pause") && !GetComponent<GameStatusController>().paused && !GetComponent<GameStatusController>().restartPause)
         {
-            GetComponent<PhotonView>().RPC("RPC_PauseGame", PhotonTargets.All);
+            if (GameObject.Find("SceneDataController_Obj").GetComponent<InterSceneController>().GetOnlineStatus() == true)
+                GetComponent<PhotonView>().RPC("RPC_PauseGame", PhotonTargets.All);
+            else
+                RPC_PauseGame();
             print("ok i pause");
         }
 
@@ -53,20 +58,34 @@ public class GameplayController : MonoBehaviour {
 
     public void ReadyToUnpause()
     {
-        mainPauseUI.SetActive(false);
-        waitingPauseUI.SetActive(true);
+        GameObject.Find("Controller").GetComponent<GameplayUIController>().ChangeUI(3);
 
-        GetComponent<PhotonView>().RPC("RPC_UnpauseCounter", PhotonTargets.All);
+        if (GameObject.Find("SceneDataController_Obj").GetComponent<InterSceneController>().GetOnlineStatus() == true)
+            GetComponent<PhotonView>().RPC("RPC_UnpauseCounter", PhotonTargets.All);
+        else
+            RPC_ResumeGame();
     }
 
     [PunRPC]
     void RPC_RestartPlayerPos()
     {
-        GetComponent<CharacterContainer>().myCharacter.GetComponent<Rigidbody2D>().velocity = new Vector2(0, 0);
-        if (PhotonNetwork.isMasterClient)
-            GetComponent<CharacterContainer>().myCharacter.transform.position = p1StartPos;
+        if (GameObject.Find("SceneDataController_Obj").GetComponent<InterSceneController>().GetOnlineStatus() == true)
+        {
+            GetComponent<CharacterContainer>().myCharacter.GetComponent<Rigidbody2D>().velocity = new Vector2(0, 0);
+            if (PhotonNetwork.isMasterClient)
+                GetComponent<CharacterContainer>().myCharacter.transform.position = p1StartPos;
+            else
+                GetComponent<CharacterContainer>().myCharacter.transform.position = p2StartPos;
+        }
         else
-            GetComponent<CharacterContainer>().myCharacter.transform.position = p2StartPos;
+        {
+            GameObject[] chars = GameObject.FindGameObjectsWithTag("character");
+            foreach (GameObject g in chars)
+                if (g.GetComponent<CharacterMainController>().GetOfflinePlayer() == 1)
+                    g.transform.position = p1StartPos;
+                else
+                    g.transform.position = p2StartPos;
+        }
     }
 
     [PunRPC]
@@ -84,9 +103,7 @@ public class GameplayController : MonoBehaviour {
         GetComponent<GameStatusController>().paused = true;
         pauseCounter = 2;
 
-        pauseMenu.SetActive(true);
-        mainPauseUI.SetActive(true);
-        waitingPauseUI.SetActive(false);
+        GameObject.Find("Controller").GetComponent<GameplayUIController>().ChangeUI(2);
 
     }
 
@@ -107,6 +124,6 @@ public class GameplayController : MonoBehaviour {
         Time.timeScale = 1;
         GetComponent<GameStatusController>().paused = false;
 
-        pauseMenu.SetActive(false);
+        GameObject.Find("Controller").GetComponent<GameplayUIController>().ChangeUI(0);
     }
 }
